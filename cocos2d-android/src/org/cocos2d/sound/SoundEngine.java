@@ -25,7 +25,7 @@ public class SoundEngine {
 	Float soundsVolume = null;
 	boolean mute = false;
 	
-    static SoundEngine _sharedEngine = null;
+    static SoundEngine _sharedEngine = new SoundEngine();
 
     public static SoundEngine sharedEngine() {
         synchronized(SoundEngine.class) {

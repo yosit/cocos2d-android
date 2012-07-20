@@ -771,7 +771,9 @@ public class CCSprite extends CCNode implements CCRGBAProtocol, CCTextureProtoco
         dirty_ = recursiveDirty_ = b;
         // recursively set dirty
         if( hasChildren_ ) {
-        	for (CCNode child: children_) {
+        	//int i = 0;
+        	for (int i = 0 ; i < children_.size();i++) {
+        		CCNode child = children_.get(i);
         		CCSprite sprite = (CCSprite)child;
         		sprite.setDirtyRecursively(true);
         	}

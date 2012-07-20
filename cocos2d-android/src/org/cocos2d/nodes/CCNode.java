@@ -283,6 +283,15 @@ public class CCNode {
         CGRect rect = CGRect.make(0, 0, contentSize_.width, contentSize_.height);
         return CGRect.applyAffineTransform(rect, nodeToParentTransform());
     }
+    
+    public CGRect getBoundingBoxYosit(CGRect outputRect) {
+        //CGRect output = CGRect.make(0, 0, contentSize_.width, contentSize_.height);
+    	outputRect.origin.x = 0;
+    	outputRect.origin.y = 0;
+    	outputRect.size.width = contentSize_.width;
+    	outputRect.size.height = contentSize_.height;
+        return CGRect.applyAffineTransformYosit(outputRect, nodeToParentTransform());
+    }
 
 	// position of the node
     protected CGPoint position_;
@@ -970,7 +979,7 @@ public class CCNode {
     /** Returns the local affine transform matrix
       @since v0.7.1
     */
-    private CGAffineTransform nodeToParentTransform() {
+    public CGAffineTransform nodeToParentTransform() {
         if (isTransformDirty_) {
         	CGPoint zero = CGPoint.getZero();
             transform_.setToIdentity();

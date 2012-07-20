@@ -87,6 +87,57 @@ public class CGRect {
     			&& a.origin.y >= (b.origin.y - a.size.height) && a.origin.y <= (b.origin.y - a.size.height) + (b.size.height + a.size.height));
     }
 
+    static CGPoint[] sp = new CGPoint[4];
+    static CGPoint[] outputsp = new CGPoint[4];
+    static CGPoint min = CGPoint.zero();
+    static CGPoint max = CGPoint.zero();
+    public static CGRect applyAffineTransformYosit(CGRect aRect, CGAffineTransform matrix) {
+    	//result.set(0, 0, 0, 0);
+        CGRect r = aRect;
+        CGPoint[] p = sp;
+
+        for (int i = 0; i < 4; i++) {
+            //p[i] = CGPoint.make(aRect.origin.x, aRect.origin.y);
+        	if (p[i] == null) {
+        		p[i] = CGPoint.make(aRect.origin.x, aRect.origin.y);
+        		outputsp[i] = CGPoint.zero();
+        	} else {
+        		p[i].x = aRect.origin.x;
+        		p[i].y = aRect.origin.y;
+        	}
+        }
+
+        p[1].x += aRect.size.width;
+        p[2].y += aRect.size.height;
+        p[3].x += aRect.size.width;
+        p[3].y += aRect.size.height;
+
+        for (int i = 0; i < 4; i++) {
+            //p[i] = CGPoint.applyAffineTransform(p[i], matrix);
+            matrix.transform(sp, 0, outputsp, 0, 4);
+            
+        }
+
+        
+//        CGPoint min = CGPoint.make(p[0].x, p[0].y),
+//                max = CGPoint.make(p[0].x, p[0].y);
+        p = outputsp;
+        max.x = min.x = p[0].x;
+        max.y = min.y = p[0].y;
+        
+        for (int i = 1; i < 4; i++) {
+            min.x = Math.min(min.x, p[i].x);
+            min.y = Math.min(min.y, p[i].y);
+            max.x = Math.max(max.x, p[i].x);
+            max.y = Math.max(max.y, p[i].y);
+        }
+
+        r.origin.x = min.x; r.origin.y = min.y;
+        r.size.width = max.x - min.x; r.size.height = max.y - min.y;
+
+        return r;
+    }
+    
     public static CGRect applyAffineTransform(CGRect aRect, CGAffineTransform matrix) {
         CGRect r = CGRect.make(0, 0, 0, 0);
         CGPoint[] p = new CGPoint[4];
